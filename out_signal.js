@@ -8,6 +8,23 @@ if (process.argv.length < 3) {
     process.exit(1);
 }
 
+var headers = [
+    "begin remote",
+    "",
+      "\tname            tv",
+      "\tflags           RAW_CODES",
+      "\teps             30",
+      "\taeps            100",
+      "\tgap             200000",
+      "\ttoggle_bit_mask 0x0",
+    "",
+      "\tbegin raw_codes",
+];
+
+headers.forEach(function(line) {
+    console.log(line);
+});
+
 var body = fs.readFileSync(process.argv[2], 'utf8');
 var lines = body.split('\n');
 
@@ -66,7 +83,11 @@ ops.forEach(function(op) {
     })
     console.log(out_code);
     console.log('');
+
 });
+
+console.log("\tend raw_codes");
+console.log("end remote");
 
 function makeSignal(value) {
     var signal = [];
