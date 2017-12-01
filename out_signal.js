@@ -34,16 +34,24 @@ var ops = [];
 var first = true;
 lines.forEach(function(line) {
     var values = line.split(',');
-    if (values.length == 2) {
+    if (values.length > 1) {
         if (first) {
             custom_code.push(Number(values[0]));
             custom_code.push(Number(values[1]));
         }
         else {
-            ops.push({
+            var op = {
                 name: values[0],
                 value: Number(values[1])
-            });
+            };
+            if (values.length == 2) {
+                op.custom_code = custom_code;
+            }
+            else if (values.length == 4) {
+                var cc = [Number(values[2]), Number(values[3])];
+                op.custom_code = cc;
+            }
+            ops.push(op);
         }
         first = false;
     }
@@ -56,7 +64,7 @@ ops.forEach(function(op) {
         values.push(value);
     });
 
-    custom_code.forEach(function(value) {
+    op.custom_code.forEach(function(value) {
         var signal = makeSignal(value);
         values = values.concat(signal);
     })
